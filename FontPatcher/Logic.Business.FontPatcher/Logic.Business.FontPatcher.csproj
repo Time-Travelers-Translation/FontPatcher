@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+	<RootNamespace>Logic.Business.FontPatcher</RootNamespace>
+	<AssemblyName>Logic.Business.FontPatcher</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\FontPatcher\CrossCutting.Core.Contract\CrossCutting.Core.Contract.csproj" />
+    <ProjectReference Include="..\Logic.Business.FontPatcher.Contract\Logic.Business.FontPatcher.Contract.csproj" />
+    <ProjectReference Include="..\Logic.Domain.Level5Management.Contract\Logic.Domain.Level5Management.Contract.csproj" />
+  </ItemGroup>
+
+</Project>

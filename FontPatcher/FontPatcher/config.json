@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Logic.Business.FontPatcher",
+    "Entries": [
+      {
+        "Key": "PatchMapPath",
+        "Value": "map.json"
+      },
+      {
+        "Key": "WidthAdjustment",
+        "Value": "-1"
+      }
+    ]
+  }
+]

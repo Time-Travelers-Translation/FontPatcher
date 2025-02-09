@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FontPatcher": {
+      "commandName": "Project",
+      "commandLineArgs": "-i D:\\Users\\Kirito\\Desktop\\reverse_engineering\\time_travelers\\game_files\\retail\\patch_work\\patch\\tt1_ctr\\ctr\\fnt\\nrm_main.xf"
+    }
+  }
+}
