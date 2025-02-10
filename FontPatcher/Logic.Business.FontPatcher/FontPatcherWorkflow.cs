@@ -62,7 +62,7 @@ namespace Logic.Business.FontPatcher
             // Remap configured special characters (eg. ä, ö, ü) to SJIS compatible placeholders
             _characterRemapWorkflow.Work(fontImageData.Font);
 
-            // Move ASCII characters to SJIS full-width equivalents
+            // Copy ASCII characters to SJIS full-width equivalents
             // HINT: The game only properly works with the SJIS range >0x8000
             _fullWidthCharacterWorkflow.Work(fontImageData.Font);
 
