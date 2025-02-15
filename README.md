@@ -7,7 +7,17 @@ The adjustments made are:
 - Remove furigana
 - Adding full-width Latin characters, based on half-width Latin characters
 
+## Configuration
+
+The character mapping and width adjustment are externally configurable through the `config.json`, explained below:
+
+|Category|Key|Description|
+|--|--|--|
+|`Logic.Business.FontPatcher`|`PatchMapPath`|The file path, relative to FontPatcher, that contains a mapping of font characters.|
+|`Logic.Business.FontPatcher`|`WidthAdjustment`|The globally applied adjustment of character widths. Can be negative.|
+
 ## Global Width Adjustments
+
 Characters in the font "Roboto Condensed", we used, had too much space between each other.<br>
 Therefore, we applied an adjustment of -1 to the width of every character supported by the font, to bring them closer together.<br>
 This didn't just grant us more space to put text and be more expressive, it also just looked better.
@@ -17,6 +27,7 @@ This didn't just grant us more space to put text and be more expressive, it also
 |Not Adjusted|Adjusted|
 
 ## Special Character Remapping
+
 Some characters, like umlauts (eg ö, é, É) and symbols (eg ×), are not supported by the text encoding, Shift-JIS, the game natively uses.<br>
 To circumvent its limitations we use placeholder characters, that were never used in our translated text, and assign them a different glyph.
 
@@ -28,6 +39,7 @@ Such placeholders are properly set during our text injection pipeline.
 |Not Adjusted|Adjusted|
 
 ## Remove Furigana
+
 Furigana is the common name for Hiragana characters written above Kanji, so people unfamiliar with the proper pronounciation of those Kanji can actually pronounce them. With the correct pronounciation, the meaning of a Kanji, or set of Kanji also becomes less ambiguous.
 
 However, in english text we do not need Furigana. It also takes away some space for every line of text, which decreases the usable space.<br>
@@ -38,6 +50,7 @@ Therefore, we removed Furigana entirely from the font, which also leads internal
 |Not Adjusted|Adjusted|
 
 ## Full-Width Latin
+
 The game's internal systems work the most reliably on full-width characters. Every character with character code <0x80 should therefore be replaced by its full-width equivalent.
 
 However, full-width characters are normally also visually wider. We wanted the glyphs of the half-width characters used by their full-width equivalents to tie all the benefits of the engine together.
