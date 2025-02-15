@@ -1,12 +1,11 @@
-﻿using NLog.Config;
+﻿using Newtonsoft.Json.Linq;
+using NLog.Config;
 using NLog.Targets;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace CrossCutting.Core.Logging.NLogAdapter
@@ -20,8 +19,8 @@ namespace CrossCutting.Core.Logging.NLogAdapter
             LoggingConfiguration config = new NLog.Config.LoggingConfiguration();
             FileTarget fileLogTarget = new NLog.Targets.FileTarget();
             fileLogTarget.Layout = GetValue<string>("CrossCutting.Core.Logging.NLogAdapter", "FileLayout", "${longdate}|${level:uppercase=true}|${logger}|${message}");
-            fileLogTarget.FileName = GetValue<string>("CrossCutting.Core.Logging.NLogAdapter", "FileName", "logs/iDxLog.log");
-            fileLogTarget.ArchiveFileName = GetValue<string>("CrossCutting.Core.Logging.NLogAdapter", "ArchiveFileName", "logs/iDxLog.{#}.log");
+            fileLogTarget.FileName = GetValue<string>("CrossCutting.Core.Logging.NLogAdapter", "FileName", "logs/font_patcher.log");
+            fileLogTarget.ArchiveFileName = GetValue<string>("CrossCutting.Core.Logging.NLogAdapter", "ArchiveFileName", "logs/font_patcher.{#}.log");
             fileLogTarget.ArchiveAboveSize = GetValue<long>("CrossCutting.Core.Logging.NLogAdapter", "ArchiveAboveSize", -1);
             fileLogTarget.MaxArchiveFiles = GetValue<int>("CrossCutting.Core.Logging.NLogAdapter", "MaxArchiveFiles", 0);
             fileLogTarget.KeepFileOpen = GetValue<bool>("CrossCutting.Core.Logging.NLogAdapter", "KeepFileOpen", true);
@@ -94,43 +93,16 @@ namespace CrossCutting.Core.Logging.NLogAdapter
         {
             try
             {
-                JsonNode? configFile = JsonNode.Parse(File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, s_configFileName)));
-                if (configFile is not JsonArray jsonArray)
-                    return defaultValue;
-
-                foreach (JsonNode? configuration in jsonArray)
+                JArray configFile = JArray.Parse(File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, s_configFileName)));
+                foreach (dynamic configuration in configFile)
                 {
-                    if (configuration is not JsonObject jsonObject)
+                    if (!configuration.Name.ToString().Equals(configName, StringComparison.OrdinalIgnoreCase))
                         continue;
 
-                    if (!jsonObject.TryGetPropertyValue("Name", out JsonNode? nameNode))
-                        continue;
-
-                    if (nameNode is not JsonValue nameValue || nameValue.GetValue<string>() != configName)
-                        continue;
-
-                    if (!jsonObject.TryGetPropertyValue("Entries", out JsonNode? entriesNode))
-                        continue;
-
-                    if (entriesNode is not JsonArray entryArray)
-                        continue;
-
-                    foreach (JsonNode? entry in entryArray)
+                    foreach (dynamic entry in configuration.Entries)
                     {
-                        if (entry is not JsonObject entryObject)
-                            continue;
-
-                        if (!entryObject.TryGetPropertyValue("Key", out JsonNode? keyNode))
-                            continue;
-
-                        if (!entryObject.TryGetPropertyValue("Value", out JsonNode? valueNode))
-                            continue;
-
-                        if (keyNode is not JsonValue keyValue || valueNode is not JsonValue valueValue)
-                            continue;
-
-                        if (keyValue.GetValue<string>() == key)
-                            return valueValue.GetValue<T>();
+                        if (entry.Key.ToString().Equals(key, StringComparison.OrdinalIgnoreCase))
+                            return entry.Value;
                     }
                 }
             }

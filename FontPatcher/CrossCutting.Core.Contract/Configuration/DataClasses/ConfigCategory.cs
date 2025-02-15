@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CrossCutting.Core.Contract.Configuration.DataClasses
@@ -10,8 +9,7 @@ namespace CrossCutting.Core.Contract.Configuration.DataClasses
     public class ConfigCategory
     {
         public string Name { get; set; }
-        [JsonInclude]
-        public List<ConfigEntry> Entries { get; private set; }
+        public List<ConfigEntry> Entries { get; }
 
         public ConfigCategory()
         {
